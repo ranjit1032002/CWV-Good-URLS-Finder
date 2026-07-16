@@ -83,8 +83,8 @@ See [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) for detailed step-by-step instruc
 ## 📋 Login Credentials
 
 **Default credentials:**
-- Username: `ranjit`
-- Password: `ranjit`
+- Username: ``
+- Password: ``
 
 **⚠️ Security**: Change these credentials in production by editing `index.php` line 16.
 
