@@ -1,4 +1,13 @@
 <?php
+// Configure session for production
+$sessionPath = __DIR__ . '/sessions';
+if (!file_exists($sessionPath)) {
+    @mkdir($sessionPath, 0777, true);
+}
+if (is_dir($sessionPath) && is_writable($sessionPath)) {
+    ini_set('session.save_path', $sessionPath);
+}
+ini_set('session.gc_maxlifetime', 3600); // 1 hour session lifetime
 session_start();
 
 // Handle logout

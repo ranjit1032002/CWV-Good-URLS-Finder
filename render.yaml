@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: cwv-url-finder
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /
+    autoDeploy: true

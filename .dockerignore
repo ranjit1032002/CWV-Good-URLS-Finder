@@ -1,0 +1,11 @@
+.git
+.gitignore
+.DS_Store
+*.md
+TEST_LOGIN.html
+README_AUTH.md
+.vscode
+.idea
+*.log
+sessions/
+tmp/
