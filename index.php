@@ -1,3 +1,31 @@
+<?php
+session_start();
+
+// Handle logout
+if (isset($_GET['logout'])) {
+  session_destroy();
+  header('Location: index.php');
+  exit;
+}
+
+// Handle login
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
+  $username = $_POST['username'] ?? '';
+  $password = $_POST['password'] ?? '';
+  
+  if ($username === 'ranjit' && $password === 'Ranjit@9062') {
+    $_SESSION['authenticated'] = true;
+    $_SESSION['username'] = $username;
+    header('Location: index.php');
+    exit;
+  } else {
+    $loginError = 'Invalid username or password';
+  }
+}
+
+// Check if user is authenticated
+$isAuthenticated = isset($_SESSION['authenticated']) && $_SESSION['authenticated'] === true;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -290,12 +318,188 @@ tbody td { padding: .75rem 1rem; vertical-align: middle; }
   main { padding: 1.2rem .8rem 4rem; }
   .card { padding: 1.2rem; }
 }
+
+/* ── Login Page ── */
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #1e2a4a 0%, #0f1117 100%);
+}
+.login-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 3rem;
+  width: 100%;
+  max-width: 420px;
+}
+.login-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+.login-header h1 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #fff 30%, #4f8ef7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: .5rem;
+}
+.login-header p {
+  color: var(--muted);
+  font-size: .9rem;
+}
+.login-form .form-group {
+  margin-bottom: 1.5rem;
+}
+.login-form label {
+  display: block;
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: .5rem;
+}
+.login-form input[type="text"],
+.login-form input[type="password"] {
+  width: 100%;
+  padding: .8rem 1rem;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: .95rem;
+  transition: border-color .2s;
+}
+.login-form input[type="text"]:focus,
+.login-form input[type="password"]:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.login-form .btn-login {
+  width: 100%;
+  padding: .9rem 2rem;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity .2s, transform .1s;
+  margin-top: .5rem;
+}
+.login-form .btn-login:hover {
+  opacity: .9;
+}
+.login-form .btn-login:active {
+  transform: scale(.98);
+}
+.login-error {
+  background: rgba(239,68,68,.1);
+  border: 1px solid rgba(239,68,68,.3);
+  color: #f87171;
+  padding: .8rem 1rem;
+  border-radius: 8px;
+  font-size: .88rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
+.logout-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: .5rem 1.2rem;
+  background: rgba(239,68,68,.15);
+  border: 1px solid rgba(239,68,68,.3);
+  color: #f87171;
+  border-radius: 8px;
+  font-size: .82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  z-index: 10;
+}
+.logout-btn:hover {
+  background: rgba(239,68,68,.25);
+}
+.user-info {
+  position: absolute;
+  top: 1rem;
+  right: 8rem;
+  padding: .5rem 1rem;
+  background: rgba(79,142,247,.15);
+  border: 1px solid rgba(79,142,247,.3);
+  color: var(--accent);
+  border-radius: 8px;
+  font-size: .82rem;
+  font-weight: 600;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+}
 </style>
 </head>
 <body>
 
+<?php if (!$isAuthenticated): ?>
+<!-- ── Login Page ── -->
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <h1>&#9889; CWV Good URL Finder</h1>
+      <p>Please login to continue</p>
+    </div>
+    
+    <?php if (isset($loginError)): ?>
+    <div class="login-error">
+      <span>&#9888;</span>
+      <span><?php echo htmlspecialchars($loginError); ?></span>
+    </div>
+    <?php endif; ?>
+    
+    <form method="POST" class="login-form">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required autofocus>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      
+      <button type="submit" name="login" class="btn-login">
+        Login
+      </button>
+    </form>
+  </div>
+</div>
+
+<?php else: ?>
+<!-- ── Authenticated Content ── -->
+
 <!-- ── Header ── -->
 <div class="header">
+  <span class="user-info">
+    <span>&#128100;</span>
+    <span><?php echo htmlspecialchars($_SESSION['username']); ?></span>
+  </span>
+  <a href="?logout=1" class="logout-btn">
+    <span>&#128682;</span>
+    <span>Logout</span>
+  </a>
+  
   <h1>&#9889; Core Web Vitals &mdash; Good URL Finder</h1>
   <p>Upload sitemap or enter URLs manually · batch-check every URL · filter &amp; export results</p>
   <div class="metric-badges">
@@ -840,5 +1044,8 @@ function escHtml(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 </script>
+
+<?php endif; ?>
+
 </body>
 </html>
