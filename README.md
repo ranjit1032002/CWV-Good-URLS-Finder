@@ -66,8 +66,8 @@ A powerful web application to analyze and identify URLs that pass Core Web Vital
    ```
 
 5. **Login**:
-   - Username: `ranjit`
-   - Password: `ranjit`
+   - Username: `username`
+   - Password: `password`
 
 ## 🌍 Deploy to Render.com (Free)
 
@@ -80,13 +80,6 @@ See [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) for detailed step-by-step instruc
 4. Select your repository
 5. Deploy! 🎉
 
-## 📋 Login Credentials
-
-**Default credentials:**
-- Username: ``
-- Password: ``
-
-**⚠️ Security**: Change these credentials in production by editing `index.php` line 16.
 
 ## 🛠️ Configuration
 
